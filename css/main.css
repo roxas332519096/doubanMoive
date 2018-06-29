@@ -39,6 +39,35 @@ main section {
     display: none;
 }
 
-main .active {
+main section.active {
     display: block;
+}
+
+section.top > .item {
+    border-bottom: 1px solid #ddd;
+    padding:10px 0;
+}
+
+.item a{
+    display: flex;
+    height: 150px;
+}
+
+.item .detail{
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    padding-left: 15px;
+}
+
+.item .cover img {
+    height: 150px;
+}
+
+section.top .loading{
+    line-height: 25px;
+    height: 25px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
 }
