@@ -1,0 +1,39 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+
+*{
+	box-sizing: border-box;
+}
+*::after{
+	box-sizing: border-box;
+}
+*::before:{
+	box-sizing: border-box;
+}
+
+ol,ul,li{
+	list-style: none;
+}
+
+a {
+	text-decoration: none;
+	display: inline-block;
+	color: inherit;
+}
+
+img {
+	border: none;
+}
+
+.clearfix::after{
+    content: "";
+    display: block;
+    clear: both;
+}
+
+input {
+	font-size: inherit;
+	border: none;
+}
