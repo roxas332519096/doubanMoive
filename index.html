@@ -14,7 +14,10 @@
 <body>
     <main>
         <section class="top active">
+            <div class="top250">
 
+            </div>
+            <div class="loading">正在加载页面中....</div>
         </section>
         <section>2</section>
         <section>3</section>
@@ -39,11 +42,13 @@
     <script src="./js/button.js"></script>
     <script>
         var index = 0;
-        var isLoading = false
+        var isLoading = false;
         getData();
         function getData(){
             if(isLoading) return
             isLoading = true;
+            console.log('loading动画出现')
+            $('section.top > div.loading').addClass('active');
             $.ajax({
             url:'https://api.douban.com/v2/movie/top250',
             type:'GET',
@@ -59,6 +64,7 @@
             console.log('error');
         }).always(function(){
             isLoading = false;
+            console.log('loading动画消失')
             $('section.top > div.loading').removeClass('active');
         })
         }
@@ -79,7 +85,6 @@
                         </div>
                     </a>
                 </div>
-                <div class="loading">正在加载数据中...<div>
                 `
                 let html = template;
                 // let src = 'https://images.weserv.nl/?url=' + movie.images.small.slice(6)
@@ -104,13 +109,8 @@
                 placeholers.map((string)=>{
                     html = html.replace(`__${string}__`,moviedata[string] || '');
                 })
-                $('section.top').append(html)
+                $('.top250').append(html);
             });
-        }
-    </script>
-    <script>
-        function loading(){
-            $('section.top > div.loading ').addClass('active');
         }
     </script>
     <script>
@@ -118,7 +118,6 @@
             let sectionTop =  $('section.top').height();
             let currentTop = $('main').height() + $('main').scrollTop();
             if(sectionTop - 10 <= currentTop){
-                loading();
                 getData();
             }
         })

@@ -43,7 +43,7 @@ main section.active {
     display: block;
 }
 
-section.top > .item {
+section.top  .item {
     border-bottom: 1px solid #ddd;
     padding:10px 0;
 }
