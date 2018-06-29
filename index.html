@@ -39,8 +39,11 @@
     <script src="./js/button.js"></script>
     <script>
         var index = 0;
+        var isLoading = false
         getData();
         function getData(){
+            if(isLoading) return
+            isLoading = true;
             $.ajax({
             url:'https://api.douban.com/v2/movie/top250',
             type:'GET',
@@ -52,10 +55,11 @@
         }).done(function(respone){
             setData(respone);
             index += 20;
-            $('section.top > .loading').remove();
-            return index;
         }).fail(function(){
             console.log('error');
+        }).always(function(){
+            isLoading = false;
+            $('section.top > div.loading').removeClass('active');
         })
         }
         function setData(respone){
@@ -75,6 +79,7 @@
                         </div>
                     </a>
                 </div>
+                <div class="loading">正在加载数据中...<div>
                 `
                 let html = template;
                 // let src = 'https://images.weserv.nl/?url=' + movie.images.small.slice(6)
@@ -105,15 +110,14 @@
     </script>
     <script>
         function loading(){
-            let template = `<div class="loading">正在加载数据中...<div>`
-            $('section.top').append(template); 
+            $('section.top > div.loading ').addClass('active');
         }
     </script>
     <script>
         $('main').scroll(function(){
             let sectionTop =  $('section.top').height();
             let currentTop = $('main').height() + $('main').scrollTop();
-            if(sectionTop -10 <= currentTop){
+            if(sectionTop - 10 <= currentTop){
                 loading();
                 getData();
             }

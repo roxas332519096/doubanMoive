@@ -65,9 +65,14 @@ section.top > .item {
 }
 
 section.top .loading{
+    display: none;
     line-height: 25px;
     height: 25px;
     font-size: 20px;
     font-weight: bold;
     text-align: center;
+}
+
+section.top .loading.active {
+    display: block;
 }
