@@ -43,7 +43,7 @@ main section.active {
     display: block;
 }
 
-section.top  .item {
+section  .item {
     border-bottom: 1px solid #ddd;
     padding:10px 0;
 }
@@ -64,7 +64,7 @@ section.top  .item {
     height: 150px;
 }
 
-section.top .loading{
+section .loading{
     display: none;
     line-height: 25px;
     height: 25px;
@@ -73,6 +73,16 @@ section.top .loading{
     text-align: center;
 }
 
-section.top .loading.active {
+section .loading.active {
     display: block;
+}
+
+.us .header {
+    background: orange;
+    border-bottom: 1px solid #ddd;
+}
+
+.us h1{
+    display: flex;
+    justify-content: center;
 }
