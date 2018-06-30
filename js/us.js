@@ -41,8 +41,8 @@
                     genres2 : movie.subject.genres[1],
                     directors : movie.subject.directors[0].name,
                     cast1 : movie.subject.casts[0].name,
-                    // cast2 : movie.subject.casts[1].name || ' ',
-                    // cast3 : movie.subject.casts[2].name || ' '
+                    cast2 : movie.subject.casts[1].name || ' ',
+                    cast3 : movie.subject.casts[2].name || ' '
                 }
                 let placeholers = 
                     ['src','title','average',
@@ -52,22 +52,15 @@
                 placeholers.map((string)=>{
                     html = html.replace(`__${string}__`,moviedata[string] || '');
                 })
-                $('.us').append(html);
+                view.$el.append(html);
             });
         },
-        onLoading(){
-            $('section.top > div.loading').addClass('active')
-        },
-        overLoading(){
-            $('section.top > div.loading').removeClass('active')
-        }
     }
     let model ={
         data:{
 
         },
         getData(callback){
-            controller.view.onLoading();
             $.ajax({
                 url:'https://api.douban.com/v2/movie/us_box',
                 type:'GET',
@@ -76,8 +69,6 @@
                     callback&&callback(respone)
                 }).fail(function(){
                     console.log('error');
-                }).always(function(){
-                    controller.view.overLoading();
                 })
         }
     }

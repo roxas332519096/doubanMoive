@@ -86,3 +86,12 @@ section .loading.active {
     display: flex;
     justify-content: center;
 }
+
+.searchBar {
+    padding:10px;
+    border: 1px solid #ddd;
+}
+
+.searchBar input {
+    border: 1px solid orange;
+}

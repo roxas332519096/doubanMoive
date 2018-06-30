@@ -1,6 +1,6 @@
 {
     let view = {
-        el:'.top250',
+        el:'.search',
         init(){
             this.$el = $(this.el);
         },
@@ -33,8 +33,8 @@
                     genres2 : movie.genres[1],
                     directors : movie.directors[0].name,
                     cast1 : movie.casts[0].name,
-                    cast2 : movie.casts[1].name,
-                    cast3 : movie.casts[2].name
+                    cast2 : movie.casts[1].name || ' ',
+                    cast3 : movie.casts[2].name || ' '
                 }
                 let placeholers = 
                     ['src','title','average',
@@ -48,10 +48,13 @@
             });
         },
         onLoading(){
-            $('section.top > div.loading').addClass('active')
+            $('section > div.loading').addClass('active')
         },
         overLoading(){
-            $('section.top > div.loading').removeClass('active')
+            $('section > div.loading').removeClass('active')
+        },
+        clear(){
+            $('.search .item').remove();
         }
     }
     let model ={
@@ -59,28 +62,22 @@
 
         },
         getData(callback){
-            if(controller.isLoading) return;
-            controller.isLoading = true;
+            console.log('start')
             controller.view.onLoading();
             $.ajax({
-                url:'https://api.douban.com/v2/movie/top250',
+                url:'https://api.douban.com/v2/movie/search',
                 type:'GET',
+                dataType:'jsonp',
                 data:{
-                    start:controller.index,
-                    count:20
-                },
-                dataType:'jsonp'
+                    start:0,
+                    count:100,
+                    q:controller.keyword
+                }
                 }).done(function(respone){
-                    controller.index += 20;
-                    if(controller.index >= respone.total){
-                        controller.isFinish = true;
-                    }
+                    controller.view.overLoading();
                     callback&&callback(respone)
                 }).fail(function(){
                     console.log('error');
-                }).always(function(){
-                    controller.isLoading = false;
-                    controller.view.overLoading();
                 })
         }
     }
@@ -88,25 +85,17 @@
         init(view,model){
             this.view = view;
             this.model = model;
-            this.isLoading = false;
-            this.isFinish = false;
-            this.index = 0;
+            this.keyword = '';
             this.view.init();
-            this.model.getData((data)=>{
-                controller.view.render(data)
-            })
-            this.bindEvents();
+            this.bindEvent();
         },
-        bindEvents(){
-            $('section.top').scroll(function(){
-                let sectionTop =  view.$el.height();
-                let currentTop = $('section.top').height() + $('.top').scrollTop();
-                console.log(sectionTop,currentTop)
-                if(sectionTop - 10 <= currentTop){
-                    controller.model.getData((data)=>{
-                        controller.view.render(data);
-                    })
-                }
+        bindEvent(){
+            $('.searchBar > button').on('click',()=>{
+                  controller.keyword = $('input').val()
+                 this.model.getData((data)=>{
+                    controller.view.clear();
+                    controller.view.render(data)
+                })
             })
         }
     }
