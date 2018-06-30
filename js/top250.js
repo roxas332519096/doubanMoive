@@ -6,13 +6,13 @@
         },
         template:`
         <div class="item">
-            <a href="#">
+            <a href="__link__">
                 <div class="cover">
                     <img src="__src__" alt="">
                 </div>
                 <div class="detail">
                     <h2>__title__</h2>
-                    <div class="extra">__average__ / __collectcount__</div>
+                    <div class="extra">评分: <span class="point">__average__</span> /  <span class="leave">__collectcount__人评价</span></div>
                     <div class="extra">__year__ / __genres1__  / __genres2__</div>
                     <div class="extra">导演:__directors__</div>
                     <div class="extra">主演:__cast1__ __cast2__ __cast3__</div>
@@ -24,6 +24,7 @@
             data.subjects.forEach(function(movie){
                 let html = view.template;
                 let moviedata = {
+                    link: movie.alt,
                     src : movie.images.small,
                     title : movie.title,
                     average : movie.rating.average,
@@ -31,20 +32,44 @@
                     year : movie.year,
                     genres1 : movie.genres[0],
                     genres2 : movie.genres[1],
-                    directors : movie.directors[0].name,
-                    cast1 : movie.casts[0].name,
-                    cast2 : movie.casts[1].name,
-                    cast3 : movie.casts[2].name
+                }
+                moviedata.directors = function(){
+                    let directors = ''
+                    if(movie.directors[0]){
+                        directors = movie.directors[0].name
+                    }
+                    return directors
+                }
+                moviedata.cast1 = function(){
+                    let cast1 = ''
+                    if(movie.casts[0]){
+                        cast1 = movie.casts[0].name
+                    }
+                    return cast1
+                }
+                moviedata.cast2 = function(){
+                    let cast2 = ''
+                    if(movie.casts[1]){
+                        cast2 = movie.casts[1].name
+                    }
+                    return cast2
+                }
+                moviedata.cast3 = function(){
+                    let cast3 = ''
+                    if(movie.casts[2]){
+                        cast2 = movie.casts[2].name
+                    }
+                    return cast3
                 }
                 let placeholers = 
-                    ['src','title','average',
+                    ['link','src','title','average',
                     'collectcount','year','genres1','genres2',
                     'directors','cast1','cast2','cast3'
                     ]
                 placeholers.map((string)=>{
                     html = html.replace(`__${string}__`,moviedata[string] || '');
                 })
-                view.$el.append(html);
+                $('.top250').append(html);
             });
         },
         onLoading(){
@@ -98,13 +123,12 @@
             this.bindEvents();
         },
         bindEvents(){
-            $('section.top').scroll(function(){
-                let sectionTop =  view.$el.height();
-                let currentTop = $('section.top').height() + $('.top').scrollTop();
-                console.log(sectionTop,currentTop)
+            $('main').scroll(function(){
+                let sectionTop =  $('section.top').height();
+                let currentTop = $('main').height() + $('main').scrollTop();
                 if(sectionTop - 10 <= currentTop){
                     controller.model.getData((data)=>{
-                        controller.view.render(data);
+                        controller.view.render(data)
                     })
                 }
             })

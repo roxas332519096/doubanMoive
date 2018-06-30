@@ -6,13 +6,13 @@
         },
         template:`
         <div class="item">
-            <a href="#">
+            <a href="__link__">
                 <div class="cover">
                     <img src="__src__" alt="">
                 </div>
                 <div class="detail">
                     <h2>__title__</h2>
-                    <div class="extra">__average__ / __collectcount__</div>
+                    <div class="extra">评分: <span class="point">__average__</span> /  <span class="leave">__collectcount__人评价</span></div>
                     <div class="extra">__year__ / __genres1__  / __genres2__</div>
                     <div class="extra">导演:__directors__</div>
                     <div class="extra">主演:__cast1__ __cast2__ __cast3__</div>
@@ -22,16 +22,13 @@
         `,
         render(data){
             var date = data.date;
-            var title = data.title;
             var dateHtml = `<h1>__date__</h1>`;
-            var titleHtml = `<h1>__title__</h1>`;
             dateHtml = dateHtml.replace(`__date__`,date);
-            titleHtml = titleHtml.replace(`__title__`,title);
-            $('.header').append(titleHtml);
             $('.header').append(dateHtml);
             data.subjects.forEach(function(movie){
                 let html = view.template;
                 let moviedata = {
+                    link : movie.subject.alt,
                     src : movie.subject.images.small,
                     title : movie.subject.title,
                     average : movie.subject.rating.average,
@@ -39,13 +36,37 @@
                     year : movie.subject.year,
                     genres1 : movie.subject.genres[0],
                     genres2 : movie.subject.genres[1],
-                    directors : movie.subject.directors[0].name,
-                    cast1 : movie.subject.casts[0].name,
-                    cast2 : movie.subject.casts[1].name || ' ',
-                    cast3 : movie.subject.casts[2].name || ' '
+                }
+                moviedata.directors = function(){
+                    let directors = ''
+                    if(movie.subject.directors[0]){
+                        directors = movie.subject.directors[0].name
+                    }
+                    return directors
+                }
+                moviedata.cast1 = function(){
+                    let cast1 = ''
+                    if(movie.subject.casts[0]){
+                        cast1 = movie.subject.casts[0].name
+                    }
+                    return cast1
+                }
+                moviedata.cast2 = function(){
+                    let cast2 = ''
+                    if(movie.subject.casts[1]){
+                        cast2 = movie.subject.casts[1].name
+                    }
+                    return cast2
+                }
+                moviedata.cast3 = function(){
+                    let cast3 = ''
+                    if(movie.subject.casts[2]){
+                        cast2 = movie.subject.casts[2].name
+                    }
+                    return cast3
                 }
                 let placeholers = 
-                    ['src','title','average',
+                    ['link','src','title','average',
                     'collectcount','year','genres1','genres2',
                     'directors','cast1','cast2','cast3'
                     ]

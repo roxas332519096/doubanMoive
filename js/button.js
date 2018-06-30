@@ -22,7 +22,7 @@
         bindEvent(){
             this.view.$el.on('click',(e)=>{
                 this.view.active(e);
-                $(window).scrollTop(0);
+                $('main').scrollTop(0);
             })
         }
     }
